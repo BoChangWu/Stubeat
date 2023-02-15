@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <%- include('../../partials/header') -%>
+        <%- include('../../partials/styles') -%>
+            <style>
+                h1 {
+                    text-align: center;
+                    font-family: 'Lobster', cursive;
+                    font-size: 4vw;
+                }
+
+                .formDiv {
+                    width: 30%;
+                    margin: 20px auto;
+                }
+
+                .card {
+                    width: 30%;
+                    height: 50px;
+                    margin: 10px auto;
+                }
+
+                .btns {
+                    width: 50%;
+                    margin: 10px auto;
+                    text-align: center;
+                }
+
+                input#addusername,
+                input#addpassword {
+                    width: 100%;
+                }
+
+                span.errorMes {
+                    font-size: 12px;
+                    color: red;
+                }
+            </style>
+</head>
+
+<body>
+    <%- include('../../partials/navbar.ejs') -%>
+        <%- include('../../partials/scripts') -%>
+            <h1>Login</h1>
+
+            <div class="formDiv">
+                <div class="form-group">
+                    <label for="email">Email: </label>
+                    <input class="form-control" type="email" id="email" name="email" placeholder="Enter email"
+                        autocomplete="off" required />
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password: </label>
+                    <input class="form-control" type="password" id="pwd" name="pwd" required />
+                </div>
+                <div class="form-group">
+                    <div class="btns">
+                        <button class="btn btn-primary" id="loginBtn">Login</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#addMem">Join</button>
+                        <div class="messSpan alert-danger" id="errorMessage" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- addMem -->
+            <div class="modal fade" id="addMem" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Create your StuBeat Account</h3>
+                        </div>
+                        <div class="modal-body">
+                            <!-- <div class="container"> -->
+                                <div class="form-group">
+                                    <label for="addusername">Username:</label>
+                                    <input id="addusername" name="username" type="text" class="form-control" required>
+                                    <span class="errorMes" id="nameMessage"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addemail">Email: </label>
+                                    <input id="addemail" name="email" type="email" class="form-control" required>
+                                    <span class="errorMes" id="emailMessage"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addpassword">Password:</label>
+                                    <input id="addpassword" name="password" type="password" size="6"
+                                        class="form-control" required>
+                                    <span class="errorMes" id="idsp"></span>
+                                    <div class="tip">Use 6 character or more</div>
+
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" id="signupBtn" type="submit">Next</button>
+                                    <button id="reset" type="reset" class="btn btn-success">Reset</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%- include('../../partials/chatBot') -%>
+
+            <script>
+
+                var emailFlag = false;
+
+                // login
+                $("#loginBtn").click(Login);
+                $("#pwd").keypress((event) => {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                        $("#loginBtn").click();
+                    }
+                });
+
+                // sign up
+                $('#signupBtn').click(Signup);
+
+                // chack email
+                $('#addemail').blur(emailCheck);
+
+                // check password format
+                // document.getElementById("addpassword").onblur = checkPwd;
+                $("#addpassword").blur(checkPwd);
+
+                // check usename
+                $('#addusername').blur(usernameCheck);
+
+                $('#reset').click(reset);
+
+                function reset() {
+                    $('#addusername').val('');
+                    $('#addemail').val('');
+                    $("#addpassword").val('');
+                    $('#nameMessage').val('');
+                    $('#emailMessage').val('');
+                    $('#idsp').val('');
+
+                }
+
+                function Login() {
+                    var email = $("#email").val();
+                    var password = $("#pwd").val();
+                    if (email && password) {
+                        var loginInfo = {
+                            email: email,
+                            password: password,
+                        };
+                        $.ajax({
+                            type: "post",
+                            url: "http://localhost:1337/api/login",
+                            data: JSON.stringify(loginInfo),
+                            contentType: "application/json;charset=utf-8",
+                        })
+                            .done(function (result) {
+                                localStorage.clear();
+                                if (result.length == 0) {
+                                    $("#errorMessage").html("Couldn't find your StuBeat account");
+                                    return
+                                }
+                                console.log(result[0]);
+                                localStorage.setItem("loginStatus", true);
+                                localStorage.setItem("userid", result[0].id);
+                                localStorage.setItem("username", result[0].username);
+                                localStorage.setItem("useremail", result[0].email);
+                                window.location.href = "/";
+                            })
+                            .fail(function (err) {
+                                alert("Error: " + err);
+                            });
+                    } else {
+                        alert("Enter your email and password");
+                    }
+                };
+
+                function Signup() {
+                    var username = $('#addusername').val();
+                    var email = $('#addemail').val();
+                    var password = $('#addpassword').val();
+                    if (username && email && password && emailFlag) {
+                        var newUser = {
+                            username: username,
+                            email: email,
+                            password: password
+                        };
+                        $.ajax({
+                            type: 'post',
+                            url: 'http://localhost:1337/api/signup',
+                            data: JSON.stringify(newUser),
+                            contentType: 'application/json;charset=utf-8'
+                        }).done(function (result) {
+                            // console.log(result);
+                            alert('Welcome to StuBeats');
+                            window.location.href = '/account/login';
+                        }
+                        ).fail(function (err) {
+                            alert('Error: ' + err.errorText);
+                        })
+                    } else {
+                        alert("Something's wrong");
+                    };
+                }
+
+                function checkPwd() {
+                    //取得addpassword元素
+                    let thePwdObj = document.getElementById("addpassword");//拿到欄位ＩＤ
+                    console.log(typeof thePwdObj);
+                    //取得addpassword元素值
+                    let thePwdObjVal = thePwdObj.value;//拿到欄位值
+                    console.log(typeof thePwdObjVal);
+                    console.log(thePwdObjVal);
+                    //判斷元素值是否為空白，密碼長度是否大於6
+                    //如果長度是否大於6，判斷是否包含字母、數字、特殊符號
+                    let sp = document.getElementById("idsp");
+                    let thePwdObjValLen = thePwdObjVal.length;//拿到輸入內容長度
+                    let flag1 = false, flag2 = false, flag3 = false;
+                    if (thePwdObjVal == "")
+                        sp.innerHTML = "Enter a password";
+
+                    // sp.innerHTML = "you need enter";
+                    else if (thePwdObjValLen >= 6) {
+
+                        sp.innerHTML = ">=";
+                        for (let i = 0; i < thePwdObjValLen; i++) {
+                            let ch = thePwdObjVal.charAt(i).toUpperCase();
+                            if (ch >= "A" && ch <= "Z")
+                                flag1 = true;
+                            //else if()
+                            if (flag1) break;
+                        }
+                        for (let o = 0; o < thePwdObjValLen; o++) {
+                            let num = thePwdObjVal.charAt(o);
+                            if (num >= 0 && num <= 9)
+                                flag2 = true;
+                            if (flag2) break;
+                        }
+                        if (flag1 && flag2)
+                            sp.innerHTML = "👍";
+                        else if (flag1)
+                            sp.innerHTML = "❌ Need numbers";
+                        else if (flag2)
+                            sp.innerHTML = "❌ Need letters";
+                    } else {
+                        sp.innerHTML = "❌ Need 6 or more characters";
+                    }
+                }
+
+                function emailCheck() {
+                    var emailCheck = $('#addemail').val();
+                    if (emailCheck === '') {
+                        $('#emailMessage').html('Enter a email address');
+                        emailFlag = false;
+                    } else {
+                        var data = { email: emailCheck }
+                        $.ajax({
+                            type: 'post',
+                            url: 'http://localhost:1337/api/emailCheck',
+                            data: JSON.stringify(data),
+                            contentType: 'application/json;charset=utf-8'
+                        }).done(function (res) {
+                            if (res.length > 0) {
+                                $('#emailMessage').html('Member exists');
+                                emailFlag = false;
+                            } else {
+                                $('#emailMessage').html('👍');
+                                emailFlag = true;
+                            }
+                        }).fail(function (err) {
+                            alert(JSON.stringify(err));
+                        });
+                    }
+                }
+
+                function usernameCheck() {
+                    if ($('#addusername').val() === '') {
+                        $('#nameMessage').html('Enter a username');
+                    } else {
+                        $('#nameMessage').html('👍')
+                    }
+                };
+
+
+            </script>
+</body>
+
+</html>

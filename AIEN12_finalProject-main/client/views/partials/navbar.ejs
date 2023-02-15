@@ -1,0 +1,61 @@
+<nav class="navbar navbar-default stayTop" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand fontCaveat" style="font-size: 30px; color: white" href="/">StuBeat</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <!-- <li><a href="/" style="color: white" class="aHover">Home</a></li> -->
+            <!-- <li style="margin-top: 15px; font-family: 'Lobster', cursive;" id="welcome">Welcome：<a href="/account/member" -->
+                    <!-- style="display: inline;color:blue;margin:0;padding:0;" class="aHover" id="member"></a></li> -->
+            <li><a href="/account/member" style="color: white; display: none" class="aHover" id="welcome"></a></li>
+            <li><a href="/music/editor" style="color: white" class="aHover">Get Started</a></li> 
+            <li><a href="/music/pro" style="color: white" class="aHover">Pro</a></li> 
+            <li><a href="/music/remix" style="color: white" class="aHover">Remix</a></li> 
+            <li><a href="/about" style="color: white" class="aHover">About</a></li>
+            <li><a href="/account/login" style="color: white" class="aHover" id="login">Login</a></li>
+            <li><a style="color: white; display: none; cursor: pointer;" class="aHover" id="logout">Logout</a></li>
+
+            </li>
+        </ul>
+
+    </div><!-- /.navbar-collapse -->
+
+</nav>
+
+<%- include('scripts') -%>
+
+    <script>
+        $(document).ready(function () {
+            if (localStorage["loginStatus"] === 'true') {
+                $('#logout').show();
+                $('#welcome').show();
+                $('#welcome').html(localStorage["username"])
+                $('#login').hide();
+                
+            } else {
+                $('#logout').hide();
+                $('#login').show();
+                $('#welcome').hide();
+            }
+        })
+
+        $('#logout').click(function () {
+            localStorage.clear();
+            window.location.href = '/';
+            alert("See you next time!");
+        })
+
+    </script>

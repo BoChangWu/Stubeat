@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Stubeat</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@1.9.0"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <%- include('../../partials/styles') -%>
+        <link rel="stylesheet" href="/stylesheets/css/style.css">
+        <link rel="stylesheet" href="/stylesheets/css/keyboard.css">
+</head>
+
+<body>
+    <%- include('../../partials/navbar.ejs') -%>
+        <h1>Pro!</h1>
+        <!-- 主要樂器控制面板區塊 -->
+        <section class="main">
+            <div class="keyboard-shadow">
+                <div class="keyboard-box">
+                    <div class="horizontal">
+                        <!-- 節拍器數字顯示處 -->
+                        <!-- 下一行若刪了，錄音鍵按下後無法變成停止鍵，無法錄音。 -->
+                        <div id="tickDisplay"></div>
+                        <!-- 下一行若刪了，按過的琴鍵無法變回白色，但仍可錄音。 -->
+                        <div id="statusUpdate" style="color:white; font-size: 18px;">Loading soundfont files...</div>
+                    </div>
+
+                    <div class="controls horizontal top">
+                        <!-- 彈奏視覺化記錄圖譜 -->
+                        <div class="visualizer">
+                            <div id="timeline"></div>
+                            <svg id="svgInput"></svg>
+                            <svg id="svgMelody"></svg>
+                            <svg id="svgDrums"></svg>
+                        </div>
+
+                        <div class="vertical" hidden>
+                            <button class="button" id="btnSave">
+                                <!-- Icon from: https://material.io/resources/icons/ -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24">
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                                </svg>
+                                <span class="text">save</span>
+                            </button>
+                            <br>
+                        </div>
+                    </div>
+
+                    <div class="vertical" style="margin-bottom: 15px;">
+                        <div class="horizontal controls centered">
+                            <div class="horizontal" style="width:100%" hidden>
+                                <label class="small"
+                                    title="A smaller number, like 0.3, means the generated drums are more conservative. A higher number, like 2, means that the generated drums will be more random. A value of 0 means that the drums will not be regenerated at every step.">
+                                    <input value="1" id="inputTemperature" class="button round">
+                                    temp
+                                </label>
+                                <label class="small">
+                                    <input value="120" id="inputTempo" class="button round">
+                                    bpm
+                                </label>
+                            </div>
+                            <!-- 【記錄鍵】 -->
+                            <button class="button" id="btnRecord" disabled style="width: 30%">
+                                <span class="knob"></span>
+                                <span class="text">record</span>
+                            </button>
+                            <br>
+                            <!-- 【播放鍵】 -->
+                            <button class="button" id="btnPlay" style="width: 30%">
+                                <!-- Icon from: https://material.io/resources/icons/ -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"
+                                    class="play">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"
+                                    class="stop" hidden>
+                                    <path d="M6 6h12v12H6z" />
+                                </svg>
+                                <span class="text">play</span>
+                            </button>
+                            <br>
+                            <!-- 【下載MIDI鍵】 -->
+                            <button class="button" id="saveBtn3" style="width:30%">
+                                <!-- Icon from: https://material.io/resources/icons/ -->
+                                <span class="material-icons">download</span>
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> -->
+                                <span class="text">download</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="horizontal bottom">
+                        <!-- 鼓、琴鍵、節拍器聲音大小調整區 -->
+                        <!-- 下一行若刪了，錄音鍵按下後無法變成停止鍵，但仍可錄音。-->
+                        <div class="vertical volume-controls" disabled hidden>
+                            <!-- <b class="volume-label">loops</b> -->
+                            <div class="horizontal">
+                                <div class="range-wrap"><input type="range" min="0" max="1" step="1" value="1"
+                                        id="inputMuteDrums"></div>
+                                <div class="range-wrap"><input type="range" min="0" max="1" step="1" value="1"
+                                        id="inputMuteInput"></div>
+                                <div class="range-wrap"><input type="range" min="0" max="1" step="1" value="1"
+                                        id="inputMuteClick"></div>
+                            </div>
+                        </div>
+
+                        <!-- 琴鍵區 -->
+                        <div class="vertical">
+                            <div class="keyboard">
+                                <div class="white-keys">
+                                    <!-- 原八度白鍵 -->
+                                    <button class="note-z pitch-0 kbbtn" data-pitch="0"><span>z</span></button>
+                                    <button class="note-x pitch-2 kbbtn" data-pitch="2"><span>X</span></button>
+                                    <button class="note-c pitch-4 kbbtn" data-pitch="4"><span>c</span></button>
+                                    <button class="note-v pitch-5 kbbtn" data-pitch="5"><span>v</span></button>
+                                    <button class="note-b pitch-7 kbbtn" data-pitch="7"><span>b</span></button>
+                                    <button class="note-n pitch-9 kbbtn" data-pitch="9"><span>n</span></button>
+                                    <button class="note-m pitch-11 kbbtn" data-pitch="11"><span>m</span></button>
+                                    <!-- 高八度白鍵 -->
+                                    <button class="note-q pitch-12 kbbtn" data-pitch="12"><span>q</span></button>
+                                    <button class="note-w pitch-14 kbbtn" data-pitch="14"><span>w</span></button>
+                                    <button class="note-e pitch-16 kbbtn" data-pitch="16"><span>e</span></button>
+                                    <button class="note-r pitch-17 kbbtn" data-pitch="17"><span>r</span></button>
+                                    <button class="note-t pitch-19 kbbtn" data-pitch="19"><span>t</span></button>
+                                    <button class="note-y pitch-21 kbbtn" data-pitch="21"><span>y</span></button>
+                                    <button class="note-u pitch-23 kbbtn" data-pitch="23"><span>u</span></button>
+                                    <button class="note-i pitch-24 kbbtn" data-pitch="24"><span>i</span></button>
+                                </div>
+                                <div class="black-keys">
+                                    <!-- 原八度黑鍵 -->
+                                    <button class="note-s c pitch-1 kbbtn" data-pitch="1"><span>s</span></button>
+                                    <button class="note-d d pitch-3 kbbtn" data-pitch="3"><span>d</span></button>
+                                    <button class="note-g f pitch-6 kbbtn" data-pitch="6"><span>g</span></button>
+                                    <button class="note-h g pitch-8 kbbtn" data-pitch="8"><span>h</span></button>
+                                    <button class="note-j a pitch-10 kbbtn" data-pitch="10"><span>j</span></button>
+                                    <!-- 高八度黑鍵 -->
+                                    <button class="note-2 c2 pitch-13 kbbtn" data-pitch="13"><span>2</span></button>
+                                    <button class="note-3 d2 pitch-15 kbbtn" data-pitch="15"><span>3</span></button>
+                                    <button class="note-5 f2 pitch-18 kbbtn" data-pitch="18"><span>5</span></button>
+                                    <button class="note-6 g2 pitch-20 kbbtn" data-pitch="20"><span>6</span></button>
+                                    <button class="note-7 a2 pitch-22 kbbtn" data-pitch="22"><span>7</span></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 琴鍵高/低八度轉換(暫不用，隱藏) -->
+                        <div class="vertical octaves" disabled hidden>
+                            <button class="button" id="btnOctaveUp">z <span class="sans">↑</span></button>
+                            <!-- <span style="font-size: 12px;">octave</span> -->
+                            <button class="button" id="btnOctaveDown">x <span class="sans">↓</span></button>
+                        </div>
+                    </div>
+                    <div class="vertical" style="margin-bottom: 15px;">
+                        <div class="horizontal controls centered" style="margin-top: 15px;">
+                            <!-- 【RNN】 -->
+                            <button class="button" id="btnRNN" style="width:35%">
+                                <span class="material-icons">queue_music</span>
+                                <span class="text">generate RNN</span>
+                            </button>
+                            <br>
+                            <!-- 【replay RNN】 -->
+                            <button class="button" id="btnReplayRNN" style="width:35%">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"
+                                    class="play">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24"
+                                    class="stop" hidden>
+                                    <path d="M6 6h12v12H6z" />
+                                </svg>
+                                <span class="text">replay</span>
+                            </button>
+                            <br>
+                        </div>
+                        <div class="vertical" style="margin-bottom: 15px;">
+                            <div class="horizontal controls centered" style="margin-top: 15px;">
+
+                                <div class="nameContainer">
+                                    <label for="saveNameAs_piano"style="color:white; font-size: 18px;">Sample Name:
+                                        <input id="saveNameAsPiano" type="text" value="Untitled" style="width:40%"></label>
+                                </div>
+                        
+                                <!-- 【download RNN】 -->
+                                <button class="button" id="btn-downloadRNN" style="width:40%;margin-right:10px">
+                                    <span class="material-icons">download</span>
+                                    <span class="text">DownloadRNN</span>
+                                </button>
+                                <br>
+                                <button class="button" id="addToDB_piano" style="width:20%">
+                                    <span class="material-icons"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                    <span class="text">Add</span>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <br><br>
+
+
+        <%- include('../../partials/scripts') -%>
+
+        <%- include('../../partials/chatBot') -%>
+            <script>
+
+                $('#addToDB_piano').click(addToDB);
+
+                function addToDB() {
+                    if (!localStorage["loginStatus"]) {
+                        alert('Login first to add music to favorite');
+                        window.location.href = '/account/login';
+                    } else {
+                        // console.log(trainedSet);
+
+                        data = {
+                            id: parseInt(localStorage["userid"]),
+                            musicname: $('#saveNameAsPiano').val(),
+                            music: trainedSet
+                        }
+                        $.ajax({
+                            type: 'post',
+                            url: 'http://localhost:1337/api/saveData',
+                            data: JSON.stringify(data),
+                            contentType: "application/json;charset=utf-8"
+                        }).done(() => {
+                            alert('Add to favorite');
+                        }).fail(() => {
+                            console.log('fail');
+                        });
+                    }
+                }
+            </script>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js" defer></script>
+            <script
+                src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.21.0/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.1.0"></script>
+            <script src="/javascripts/audio/visualizer.js"></script>
+            <script src="/javascripts/audio/input-recorder.js"></script>
+            <script src="/javascripts/audio/audio-loop.js"></script>
+            <script src="/javascripts/audio/metronome.js"></script>
+            <script src="/javascripts/audio/script.js"></script>
+</body>
+
+</html>

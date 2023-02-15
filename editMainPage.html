@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuBeat</title>
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.min.js"></script>
+    <style>
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        *{
+           /* border: 1px solid #000;  */
+        }
+        #btnGroup{
+            margin: auto;
+            width: 90%;
+            height: 400px;
+            display: flex;
+            background-color: #232426;
+            justify-content: center;
+            align-items: center;
+        }
+        .timeSeri{
+            width: 5%;
+            margin: 0;
+        }
+        .soundBtn{
+            background-color: #ededed;
+            margin-top: 5px;
+            margin-left: 10px;
+            width: 40px;
+            height: 20px;
+
+        }
+        .soundBtn:hover{
+            background-color: #ff593f;
+        }
+    </style>
+</head>
+<body>
+    <div id="editTable">
+        <div id="timeParam" class="timeParam">
+            <label for="qpmVal">qpm
+            <input type="number" id="qpmVal" min="60" max="180" step ="1" value="90">
+            </label>
+            <label for="sectionNum">Section
+            <input type="number" id="sectionNum" min="1" max="4" step="1"  value="4" >
+            </label>
+        </div>
+        <div id="btnGroup">
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+            <div class="timeSeri"><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button><button class="soundBtn"></button></div>
+        </div>
+    </div>
+    <button id="play">PLAY</button>
+    <label for="saveNameAs">Sample Name
+    <input id="saveNameAs" type="text" value="Untitled">
+    </label>
+    <label id="fileBtn" for="fileinput">
+        <input id="fileinput" type="file">
+    </label>
+    <button id="savebtn">Save Sample</button>
+    <button id="musicRnn">RNN</button>
+    <button id="saveTrainedbtn">Save Trained Sample</button>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="mainPage.js"></script>
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js" defer></script>
+</html>

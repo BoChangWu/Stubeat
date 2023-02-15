@@ -1,0 +1,309 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Courgette&display=swap");
+
+/* navigation bar */
+.navbar-default {
+  background-color: rgb(255, 215, 0);
+  border-color: rgb(255, 215, 0);
+  border-radius: 0;
+}
+
+.fontCaveat {
+  font-family: "Lobster", cursive;
+}
+
+.fontCaveat:hover {
+  font-size: 40px;
+}
+
+.index_container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.aHover {
+  font-size: 20px;
+  font-family: "Courgette", cursive;
+}
+
+.aHover:hover {
+  font-size: 30px;
+}
+
+/* index page */
+.index_centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-family: "Lobster", cursive;
+  font-size: 10vw;
+}
+
+/* .btn_centered{
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.btn_try{
+  font-size: 1vw;
+  font-family: 'Courgette', cursive;
+} */
+
+.indexBtn {
+  margin-top: 20px;
+}
+
+.indexBtn a {
+  margin-right: 20px;
+  font-size: 1.2vw;
+  /* font-family: 'Courgette', cursive */
+}
+
+.indexBtn a.btn {
+  width: 10%;
+  height: 10%;
+}
+
+/* member page */
+.memberCard {
+  /* height: 300px; */
+  width: 50%;
+  margin: 20px auto;
+  text-align: left;
+  padding: 20px;
+  border: 2px ridge white;
+  border-radius: 15px;
+}
+
+.info {
+  font-size: 20px;
+  margin: 30px auto;
+  width: 400px;
+  font-family: "Courgette", cursive;
+}
+
+.mamberPageInfo {
+  padding-left: 10px;
+  font-size: 20px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.musicContainer {
+  width: 50%;
+  margin: 20px auto;
+}
+
+td.userBtn button {
+  /* vertical-align: middle; */
+  text-align: center;
+  margin-top: 0px;
+}
+
+/* Login page */
+#addMem {
+  width: 25%;
+  height: 80%;
+  margin-left: 37%;
+  margin-top: 5%;
+  background-color: whitesmoke;
+  border: 5px solid rgb(46, 78, 111);
+  border-radius: 5px;
+  /* padding: 5px; */
+  text-align: center;
+  overflow: auto;
+}
+
+#addusername,
+#addpassword {
+  width: 60%;
+}
+
+div.modal-dialog,
+div.modal-content {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+div button {
+  margin-top: 20px;
+}
+
+/* div.modal-footer {
+  height:50px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+ */
+div.modal-header {
+  height: 60px;
+  align-items: center;
+  background-color: rgb(250, 216, 73);
+}
+
+div.container {
+  width: 100%;
+  height: 100%;
+}
+
+div.tip {
+  margin-top: 0;
+  padding: 0;
+}
+
+/* Music Editor page */
+.left {
+  position: absolute;
+  left: auto;
+  width: 10vw;
+  height: 650px;
+  border: 3px groove black;
+  overflow: auto;
+}
+
+.right {
+  position: absolute;
+  left: 10vw;
+  width: 85vw;
+  height: 650px;
+  border: 3px groove black;
+  overflow: auto;
+}
+
+.customize {
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-bottom: 15px;
+  background-color: lightgray;
+}
+
+.customizeLabels label {
+  padding-bottom: 5px;
+}
+
+.customizeBtns {
+  padding-right: 10px;
+  text-align: right;
+}
+
+.editorBtns {
+  /* position: absolute; */
+  padding: 10px;
+  text-align: right;
+  /* left: 80%; */
+  /* bottom: 20px; */
+  margin-top: 40px;
+}
+
+.sampleList {
+  width: 100%;
+}
+
+.samples {
+  padding-top: 20px;
+}
+
+.samples button {
+  width: 90%;
+  margin: 10px 10px;
+}
+
+.leftBottom {
+  position: absolute;
+  width: 80%;
+  text-align: center;
+  margin-left: 20px;
+  bottom: 20px;
+}
+
+#fileBtn,
+#fileinput {
+  width: 95%;
+}
+
+/* about page */
+.aboutContent {
+  width: 50%;
+  margin: 20px auto;
+  text-align: center;
+  font-size: 20px;
+}
+
+/* CMS pages */
+#MemberCtrl{
+  text-align: center;
+}
+
+
+thead tr{
+  font-size: larger;
+  font-weight: bolder;
+}
+th{
+  text-align: center;
+}
+tr:nth-child(even){
+  background-color: #dddddd;
+}
+#updateMem,#updateEmp{
+  width: 30%;
+  height: 450px;
+  margin-left:35%;
+  margin-top:2%;
+  background-color: whitesmoke;
+  border: 5px solid rgb(46,78,111);
+  border-radius: 5px;
+  /* padding: 5px; */
+  text-align: center;
+}
+
+#saveMid,#updateMemname,#updateEmpname{
+  text-align: center;
+}
+#QueryMem,#QueryEmp{
+  margin:0;
+}
+#Emusname{
+  border-color: transparent;
+  border:transparent;
+  text-align:center;
+  background-color: transparent;
+  width: 70px;
+}
+/*  */
+#admin-sidebar-wrapper{
+  width: 10%;
+  position: fixed;
+  top:15%;
+  align-items: center;
+  text-align: center;
+}
+
+.tabposition{
+  width:80%;
+  margin-left:15%;
+  margin-top: 8%;
+}
+
+#EmployeeCtrl,#MemberCtrl,#ProductCtrl,#OrderCtrl{
+  background-color: whitesmoke;
+  /* border: 1px solid black;
+  border-collapse: collapse; */
+  height: 80vh;
+  overflow: scroll;
+  margin-bottom: 30px;
+}
+
+nav.navbar,#admin-sidebar-wrapper{
+  background-color: rgb(250,216,73);
+}
+/* 717 */
